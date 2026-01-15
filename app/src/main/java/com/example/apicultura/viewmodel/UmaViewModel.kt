@@ -4,6 +4,8 @@ package com.example.apicultura.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apicultura.model.CharacterDetail
@@ -22,11 +24,11 @@ class UmaViewModel : ViewModel() {
         .build()
 
     val api: Api = retrofit.create(Api::class.java)
-    var characterList by mutableStateOf<List<CharacterListItem>>(emptyList())
-        private set
+    private val _characterList = MutableLiveData<List<CharacterListItem>>()
+    val characterList: LiveData<List<CharacterListItem>> = _characterList
 
-    var selectedCharacter by mutableStateOf<CharacterDetail?>(null)
-        private set
+    private val _selectedCharacter = MutableLiveData<CharacterDetail?>()
+    val selectedCharacter: LiveData<CharacterDetail?> = _selectedCharacter
 
     init {
         loadCharacterList()
@@ -34,13 +36,23 @@ class UmaViewModel : ViewModel() {
 
     fun loadCharacterList() {
         viewModelScope.launch {
-            characterList = api.getCharacterList()
+            try {
+                val list = api.getCharacterList() // make sure API returns List<CharacterListItem>
+                _characterList.postValue(list)
+            } catch (e: Exception) {
+                _characterList.postValue(emptyList()) // or handle error
+            }
         }
     }
 
     fun loadCharacterDetail(id: Int) {
         viewModelScope.launch {
-            selectedCharacter = api.getCharacterById(id)
+            try {
+                val detail = api.getCharacterById(id) // make sure API returns CharacterDetail
+                _selectedCharacter.postValue(detail)
+            } catch (e: Exception) {
+                _selectedCharacter.postValue(null)
+            }
         }
     }
 }

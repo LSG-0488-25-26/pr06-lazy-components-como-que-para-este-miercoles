@@ -60,11 +60,13 @@ fun UmaItem(
             )
             Spacer(modifier = Modifier.width(12.dp))
 
-            Text(
-                text = character.name_en,
-                color = Color.White,
-                modifier = Modifier.fillMaxWidth()
-            )
+            character.name_en?.let {
+                Text(
+                    text = it,
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
@@ -72,7 +74,7 @@ fun UmaItem(
 @DrawableRes
 fun imageFromInternalName(
     context: Context,
-    internalName: String
+    internalName: String?
 ): Int {
     val resId = context.resources.getIdentifier(
         internalName,
