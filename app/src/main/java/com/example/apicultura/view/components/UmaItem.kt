@@ -28,7 +28,7 @@ fun UmaItem(
     val context = LocalContext.current
 
     val mainColor = try {
-        Color((character.colorMain ?: "#CCCCCC").toColorInt())
+        Color((character.color_main ?: "#CCCCCC").toColorInt())
     } catch (_: Exception) {
         Color.Gray
     }
@@ -50,26 +50,21 @@ fun UmaItem(
                 painter = painterResource(
                     id = imageFromInternalName(
                         context,
-                        character.nameInternal // fixed
+                        character.name_en_internal
                     )
                 ),
-                contentDescription = character.name,
+                contentDescription = character.name_en,
                 modifier = Modifier
                     .size(64.dp)
                     .background(Color.LightGray, RoundedCornerShape(8.dp))
             )
-
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = character.name)
-                Text(
-                    text = "Birthday: ${character.birthMonth ?: "--"}/${character.birthDay ?: "--"}",
-                    color = Color.DarkGray
-                )
-            }
+            Text(
+                text = character.name_en,
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

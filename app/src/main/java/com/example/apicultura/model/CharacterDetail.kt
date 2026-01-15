@@ -1,15 +1,42 @@
 package com.example.apicultura.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class CharacterDetail(
+    val birth_day: Int,
+    val birth_month: Int,
+    val category_label: String,
+    val category_label_en: String,
+    val category_value: String,
+    val color_main: String,
+    val color_sub: String,
+    val date_gmt: String,
+    val detail_img_pc: String,
+    val detail_img_sp: String,
+    val ears_fact: String,
+    val family_fact: String,
+    val game_id: Int,
+    val grade: String,
+    val height: Int,
     val id: Int,
-    @SerialName("name_en") val name: String,
-    @SerialName("name_en_internal") val nameInternal: String,
-    val profile: String?,
-    @SerialName("birth_month") val birthMonth: Int?,
-    @SerialName("birth_day") val birthDay: Int?,
-    @SerialName("color_main") val colorMain: String?
+    val link: String,
+    val modified_gmt: String,
+    val name_en: String,
+    val name_en_internal: String,
+    val name_jp: String,
+    val preferred_url: String,
+    val profile: String,
+    val residence: String,
+    val row_number: Int,
+    val shoe_size: String,
+    val size_b: Int,
+    val size_h: Int,
+    val size_w: Int,
+    val slogan: String,
+    val sns_header: String,
+    val sns_icon: String,
+    val strengths: String,
+    val tail_fact: String,
+    val thumb_img: String,
+    val voice: String,
+    val weaknesses: String,
+    val weight: String
 )

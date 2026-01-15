@@ -29,7 +29,7 @@ fun UmaDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(character?.name ?: "Loading...") },
+                title = { Text(character?.name_en ?: "Loading...") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -64,7 +64,7 @@ fun CharacterDetailContent(character: CharacterDetail, paddingValues: PaddingVal
     ) {
         // Character image (local drawable)
         val imageId = try {
-            val field = R.drawable::class.java.getField(character.nameInternal)
+            val field = R.drawable::class.java.getField(character.name_en_internal)
             field.getInt(null)
         } catch (e: Exception) {
             R.drawable.uma_placeholder
@@ -72,7 +72,7 @@ fun CharacterDetailContent(character: CharacterDetail, paddingValues: PaddingVal
 
         Image(
             painter = painterResource(id = imageId),
-            contentDescription = character.name,
+            contentDescription = character.name_en,
             modifier = Modifier
                 .size(200.dp)
                 .clip(RoundedCornerShape(12.dp))
@@ -80,7 +80,7 @@ fun CharacterDetailContent(character: CharacterDetail, paddingValues: PaddingVal
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = character.name, style = MaterialTheme.typography.headlineMedium)
+        Text(text = character.name_en, style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -88,8 +88,8 @@ fun CharacterDetailContent(character: CharacterDetail, paddingValues: PaddingVal
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        if (character.birthMonth != null && character.birthDay != null) {
-            Text(text = "Birthday: ${character.birthMonth}/${character.birthDay}")
+        if (character.birth_month != null && character.birth_day != null) {
+            Text(text = "Birthday: ${character.birth_month}/${character.birth_day}")
         }
     }
 }

@@ -1,15 +1,16 @@
 package com.example.apicultura.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class CharacterListItem(
+    val category_label: String,
+    val category_label_en: String,
+    val category_value: String,
+    val color_main: String,
+    val color_sub: String,
     val id: Int,
-    @SerialName("name_en") val name: String,
-    @SerialName("name_en_internal") val nameInternal: String,
-    val profile: String?,
-    @SerialName("birth_month") val birthMonth: Int?,
-    @SerialName("birth_day") val birthDay: Int?,
-    @SerialName("color_main") val colorMain: String?
+    val name_en: String,
+    val name_en_internal: String,
+    val name_jp: String,
+    val preferred_url: String,
+    val row_number: Int,
+    val thumb_img: String
 )
