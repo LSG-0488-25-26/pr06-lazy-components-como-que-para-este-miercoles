@@ -1,5 +1,8 @@
 package com.example.apicultura.view.components
 
+import android.content.Context
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,36 +12,77 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.apicultura.R
+import androidx.core.graphics.toColorInt
+import com.example.apicultura.model.CharacterListItem
+
 
 @Composable
 fun UmaItem(
+    character: CharacterListItem,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    val mainColor = try {
+        Color((character.colorMain ?: "#CCCCCC").toColorInt())
+    } catch (_: Exception) {
+        Color.Gray
+    }
+
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(6.dp)
             .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier
                 .height(80.dp)
+                .background(mainColor.copy(alpha = 0.15f))
                 .padding(8.dp)
         ) {
-            Box(
+            Image(
+                painter = painterResource(
+                    id = imageFromInternalName(
+                        context,
+                        character.nameInternal // fixed
+                    )
+                ),
+                contentDescription = character.name,
                 modifier = Modifier
                     .size(64.dp)
-                    .background(Color.Gray) // Placeholder de imagen
+                    .background(Color.LightGray, RoundedCornerShape(8.dp))
             )
-            Spacer(modifier = Modifier.width(16.dp))
+
+            Spacer(modifier = Modifier.width(12.dp))
+
             Column(
-                modifier = Modifier.fillMaxHeight()
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("Nombre del personaje")  // Placeholder
-                Text("Rareza: ???")           // Placeholder
+                Text(text = character.name)
+                Text(
+                    text = "Birthday: ${character.birthMonth ?: "--"}/${character.birthDay ?: "--"}",
+                    color = Color.DarkGray
+                )
             }
         }
     }
+}
+
+@DrawableRes
+fun imageFromInternalName(
+    context: Context,
+    internalName: String
+): Int {
+    val resId = context.resources.getIdentifier(
+        internalName,
+        "drawable",
+        context.packageName
+    )
+    return if (resId != 0) resId else R.drawable.uma_placeholder
 }

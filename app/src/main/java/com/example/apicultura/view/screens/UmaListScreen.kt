@@ -1,25 +1,17 @@
-package com.example.apicultura.view.screens
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import com.example.apicultura.view.components.UmaItem
+import androidx.navigation.NavController
 import com.example.apicultura.viewmodel.UmaViewModel
+import com.example.apicultura.view.components.UmaItem
 
 @Composable
-fun UmaListScreen(
-    viewModel: UmaViewModel
-) {
-    // Lista de 8 placeholders
-    val placeholders = List(8) { it }
-
+fun UmaListScreen(viewModel: UmaViewModel, navController: NavController) {
     LazyColumn {
-        items(placeholders) { _ ->
-            UmaItem(
-                onClick = {
-                    // Ir a detalles del objeto
-                }
-            )
+        items(viewModel.characterList) { character ->
+            UmaItem(character = character) {
+                navController.navigate("detail/${character.id}")
+            }
         }
     }
 }

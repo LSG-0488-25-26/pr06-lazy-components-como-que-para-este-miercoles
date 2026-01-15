@@ -1,5 +1,6 @@
 package com.example.apicultura
 
+import NavGraph
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.apicultura.ui.theme.APIculturaTheme
 import com.example.apicultura.viewmodel.UmaViewModel
-import com.example.apicultura.view.navigation.NavGraph
+import com.example.apicultura.view.*
 
 class MainActivity : ComponentActivity() {
 

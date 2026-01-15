@@ -1,30 +1,95 @@
-package com.example.apicultura.view.screens
-
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.apicultura.model.CharacterDetail
+import com.example.apicultura.R
+import com.example.apicultura.viewmodel.UmaViewModel
+import androidx.compose.ui.Alignment
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UmaDetailScreen(
+    viewModel: UmaViewModel,
+    characterId: Int,
+    onBack: () -> Unit
+) {
+    // Load character detail when this screen appears
+    LaunchedEffect(characterId) {
+        viewModel.loadCharacterDetail(characterId)
+    }
+
+    val character by remember { derivedStateOf { viewModel.selectedCharacter } }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(character?.name ?: "Loading...") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        if (character == null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            CharacterDetailContent(character!!, paddingValues)
+        }
+    }
+}
 
 @Composable
-fun UmaDetailScreen() {
+fun CharacterDetailContent(character: CharacterDetail, paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(paddingValues)
             .padding(16.dp)
     ) {
-        Box(
+        // Character image (local drawable)
+        val imageId = try {
+            val field = R.drawable::class.java.getField(character.nameInternal)
+            field.getInt(null)
+        } catch (e: Exception) {
+            R.drawable.uma_placeholder
+        }
+
+        Image(
+            painter = painterResource(id = imageId),
+            contentDescription = character.name,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color.Gray) // Placeholder imagen
+                .size(200.dp)
+                .clip(RoundedCornerShape(12.dp))
         )
+
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Nombre del personaje")
-        Text("Rareza: ???")
+
+        Text(text = character.name, style = MaterialTheme.typography.headlineMedium)
+
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Descripción del personaje...")
+
+        Text(text = character.profile ?: "No description available.")
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (character.birthMonth != null && character.birthDay != null) {
+            Text(text = "Birthday: ${character.birthMonth}/${character.birthDay}")
+        }
     }
 }
